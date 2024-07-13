@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+
+class BalancedExpressionChecker
+{
+
+    public static bool IsBalancedExpression(string expression)
+    {
+        Stack<char> stack = new Stack<char>();
+
+        foreach (char character in expression)
+        {
+            if (IsOpeningBracket(character))
+            {
+                stack.Push(character);
+            }
+            else if (IsClosingBracket(character))
+            {
+                if (stack.Count == 0 || !IsMatchingBracket(stack.Pop(), character))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return stack.Count == 0;
+    }
+
+    private static bool IsOpeningBracket(char character)
+    {
+        return character == '(' || character == '{' || character == '[';
+    }
+
+    private static bool IsClosingBracket(char character)
+    {
+        return character == ')' || character == '}' || character == ']';
+    }
+
+    private static bool IsMatchingBracket(char openingBracket, char closingBracket)
+    {
+        switch (openingBracket)
+        {
+            case '(':
+                return closingBracket == ')';
+            case '{':
+                return closingBracket == '}';
+            case '[':
+                return closingBracket == ']';
+            default:
+                return false;
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        string expression = "{7+(8*5)-[(9-7)+(4+1)]}";
+
+        if (IsBalancedExpression(expression))
+        {
+            Console.WriteLine("The expression is balanced");
+        }
+        else
+        {
+            Console.WriteLine("The expression is not balanced");
+        }
+    }
+}
